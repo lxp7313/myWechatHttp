@@ -25,6 +25,11 @@ async def msg_cb(Msg = Body(description="微信消息"), response= Response):
 
     return {"status": 500, "message": "成功"}
 
-app.add_api_route("/msg_cb", msg_cb, methods=["POST"], summary="接收消息回调样例", tags=["示例"])
+def main():
 
-uvicorn.run(app, host="0.0.0.0", port=10000)
+    app.add_api_route("/msg_cb", msg_cb, methods=["POST"], summary="接收消息回调样例", tags=["示例"])
+
+    uvicorn.run(app, host="0.0.0.0", port=10000)
+
+if __name__ == '__main__':
+    main()
