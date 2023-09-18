@@ -1,4 +1,9 @@
-wcfhttp
 argparse
-uvicorn
 flask
+protobuf
+google
+uvicorn
+pynng
+requests
+fastapi
+pydantic

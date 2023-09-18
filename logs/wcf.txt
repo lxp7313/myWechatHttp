@@ -90,3 +90,11 @@
 [2023-09-18 17:52:40.915] [info] [WCF] [rpc_server.cpp::726::RunServer] CMD Server listening on tcp://0.0.0.0:10086
 [2023-09-18 17:52:41.420] [error] [WCF] [rpc_server.cpp::328::PushMessage] URL: tcp://0.0.0.0:10087
 [2023-09-18 17:52:41.421] [info] [WCF] [rpc_server.cpp::339::PushMessage] MSG Server listening on tcp://0.0.0.0:10087
+[2023-09-18 22:37:27.208] [info] [WCF] [rpc_server.cpp::726::RunServer] CMD Server listening on tcp://0.0.0.0:10086
+[2023-09-18 22:37:27.238] [error] [WCF] [rpc_server.cpp::328::PushMessage] URL: tcp://0.0.0.0:10087
+[2023-09-18 22:37:27.240] [info] [WCF] [rpc_server.cpp::339::PushMessage] MSG Server listening on tcp://0.0.0.0:10087
+[2023-09-18 22:37:27.372] [error] [WCF] [rpc_server.cpp::737::RunServer] nng_recv error: Object closed
+[2023-09-18 22:37:28.376] [info] [WCF] [rpc_server.cpp::788::RpcStopServer] Server stoped.
+[2023-09-18 22:45:14.354] [info] [WCF] [rpc_server.cpp::726::RunServer] CMD Server listening on tcp://0.0.0.0:10086
+[2023-09-18 22:45:14.366] [error] [WCF] [rpc_server.cpp::328::PushMessage] URL: tcp://0.0.0.0:10087
+[2023-09-18 22:45:14.367] [info] [WCF] [rpc_server.cpp::339::PushMessage] MSG Server listening on tcp://0.0.0.0:10087
