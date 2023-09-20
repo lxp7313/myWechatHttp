@@ -29,7 +29,7 @@ def main():
 
     app.add_api_route("/msg_cb", msg_cb, methods=["POST"], summary="接收消息回调样例", tags=["示例"])
 
-    uvicorn.run(app, host="0.0.0.0", port=10000)
+    uvicorn.run(app, host="localhost", port=10000)
 
 if __name__ == '__main__':
     main()
