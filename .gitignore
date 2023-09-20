@@ -4,3 +4,5 @@
 /venv
 .wcf.lock
 logs
+/wcferry/__pycache__
+/wcfhttp/__pycache__
