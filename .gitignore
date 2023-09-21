@@ -6,3 +6,4 @@
 logs
 /wcferry/__pycache__
 /wcfhttp/__pycache__
+/.wcf.lock
