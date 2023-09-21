@@ -29,10 +29,10 @@ class wx_http():
     async def msg_cb(self, Msg = Body(description="微信消息"), response= Response):
         print(f"收到消息：{Msg}")
         self.updateContact(Msg)
-        self.remsg(Msg)
+        self.processMsg(Msg)
 
         return {"status": 500, "message": "成功"}
-    def remsg(self, Msg):
+    def processMsg(self, Msg):
         wxid = Msg['sender']
         roomid = Msg['roomid']
         content = Msg['content']
