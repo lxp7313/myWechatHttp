@@ -98,7 +98,7 @@ def task1():
 
 if __name__ == '__main__':
     # 创建定时任务线程
-    schedule_thread = threading.Thread(target=schedule.every(5).seconds.do, args=(task,))
+    schedule_thread = threading.Thread(target=schedule.every().day.at("17:52").do, args=(task,))
     schedule_thread.start()
 
     # 创建定时任务线程
