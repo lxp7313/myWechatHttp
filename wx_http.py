@@ -1,3 +1,6 @@
+import schedule
+import time
+import threading
 from fastapi import Body, FastAPI, Request, Response
 import uvicorn
 from pydantic import BaseModel
@@ -85,5 +88,28 @@ def main():
 
     uvicorn.run(app, host="localhost", port=10000)
 
+# 定义任务函数
+def task():
+    print("定时任务执行中...")
+
+def task1():
+    while True:
+        print("定时任务执行中1...")
+
 if __name__ == '__main__':
-    main()
+    # 创建定时任务线程
+    schedule_thread = threading.Thread(target=schedule.every(5).seconds.do, args=(task,))
+    schedule_thread.start()
+
+    # 创建定时任务线程
+    schedule_thread1 = threading.Thread(target=main, args=())
+    schedule_thread1.start()
+
+    # 创建定时任务线程
+    # schedule.every(5).seconds.do(task)
+
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+    # main()

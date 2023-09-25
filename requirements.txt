@@ -7,3 +7,4 @@ pynng
 requests
 fastapi
 pydantic
+schedule
