@@ -1,9 +1,14 @@
+import schedule
+import time
+import threading
 from fastapi import Body, FastAPI, Request, Response
 import uvicorn
 from pydantic import BaseModel
 import sqlite3
 from datetime import datetime
 import requests
+import os
+import random
 
 app = FastAPI()
 
@@ -85,5 +90,50 @@ def main():
 
     uvicorn.run(app, host="localhost", port=10000)
 
+# 定义任务函数
+def task():
+    print("定时任务执行中...")
+    # 指定图片所在的文件夹路径
+    img_folder = "./images"
+    # 获取文件夹中所有的图片文件路径
+    img_files = [os.path.join(img_folder, f) for f in os.listdir(img_folder) if
+                 f.endswith(".jpg") or f.endswith(".png")]
+
+    # 随机选择一个图片文件路径
+    rand_img_file = random.choice(img_files)
+
+    current_dir = os.getcwd()
+    print(current_dir)
+    print(rand_img_file)
+    file_img = current_dir + rand_img_file[1:].replace('/','\\')
+    print(file_img)
+
+    cb = 'http://localhost:9999/image'
+    data = {
+        "path": file_img,
+        "receiver": "wxid_cf5vewq4pwzj21"
+    }
+    rsp = requests.post(url=cb, json=data, timeout=30)
+    print(rsp)
+
+
 if __name__ == '__main__':
-    main()
+    task()
+    exit(0)
+
+    # 创建定时任务线程
+    schedule_thread = threading.Thread(target=schedule.every().day.at("17:29").do, args=(task,))
+    schedule_thread.start()
+
+    # 创建定时任务线程
+    schedule_thread1 = threading.Thread(target=main, args=())
+    schedule_thread1.start()
+
+    # 创建定时任务线程
+    # schedule.every(5).seconds.do(task)
+
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+    # main()
