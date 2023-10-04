@@ -9,3 +9,4 @@ fastapi
 pydantic
 schedule
 pillow==9.5.0
+pandas

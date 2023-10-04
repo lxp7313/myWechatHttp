@@ -9,6 +9,7 @@ from datetime import datetime
 import requests
 import os
 import random
+from func_chengyu import Chengyu
 
 app = FastAPI()
 
@@ -30,6 +31,7 @@ class Msg(BaseModel):
 class wx_http():
     def __init__(self) -> None:
         self.conn = sqlite3.connect('wx_contact.db')
+        self.chengyu = ''
 
     async def msg_cb(self, Msg = Body(description="微信消息"), response= Response):
         print(f"收到消息：{Msg}")
@@ -42,7 +44,21 @@ class wx_http():
         roomid = Msg['roomid']
         content = Msg['content']
         print(f"{wxid}[{roomid}]:{content}")
-        if(wxid == 'wxid_mboc06esypzm19'):
+        if(self.chengyu != '' and self.chengyu == content):
+            chengyu = Chengyu()
+            chengyu_mean = chengyu.getMeaning(self.chengyu)
+            print(chengyu_mean)
+
+            cb = 'http://localhost:9999/text'
+            data = {
+                "msg":"恭喜你，答对了\n" + chengyu_mean,
+                 "receiver":"filehelper"
+            }
+            rsp = requests.post(url=cb, json=data, timeout=30)
+            self.chengyu = ''
+            print(rsp)
+
+        elif(wxid == 'wxid_mboc06esypzm19'):
             cb = 'http://localhost:9999/text'
             data = {
                 "msg":"你吃饭了没",
@@ -83,6 +99,40 @@ class wx_http():
                 conn.commit()
 
         conn.close()
+    def chengyu_send(self):
+        print("定时任务执行中...")
+        # 指定图片所在的文件夹路径
+        img_folder = "./images"
+        # 获取文件夹中所有的图片文件路径
+        img_files = [os.path.join(img_folder, f) for f in os.listdir(img_folder) if
+                     f.endswith(".jpg") or f.endswith(".png")]
+
+        # 随机选择一个图片文件路径
+        rand_img_file = random.choice(img_files)
+
+        current_dir = os.getcwd()
+        print(current_dir)
+        print(rand_img_file)
+        self.chengyu = chengyu = rand_img_file.split('\\')[1].split('.')[0]
+        print(chengyu)
+        file_img = current_dir + rand_img_file[1:].replace('/', '\\')
+        print(file_img)
+
+        cb = 'http://localhost:9999/image'
+        data = {
+            "path": file_img,
+            "receiver": "filehelper"
+        }
+        rsp = requests.post(url=cb, json=data, timeout=30)
+        print(rsp)
+
+        cb = 'http://localhost:9999/text'
+        data = {
+            "msg": chengyu,
+             "receiver": "filehelper"
+        }
+        rsp = requests.post(url=cb, json=data, timeout=30)
+        print(rsp)
 
 wx_http = wx_http()
 def main():
@@ -91,46 +141,43 @@ def main():
     uvicorn.run(app, host="localhost", port=10000)
 
 # 定义任务函数
-def task():
-    print("定时任务执行中...")
-    # 指定图片所在的文件夹路径
-    img_folder = "./images"
-    # 获取文件夹中所有的图片文件路径
-    img_files = [os.path.join(img_folder, f) for f in os.listdir(img_folder) if
-                 f.endswith(".jpg") or f.endswith(".png")]
-
-    # 随机选择一个图片文件路径
-    rand_img_file = random.choice(img_files)
-
-    current_dir = os.getcwd()
-    print(current_dir)
-    print(rand_img_file)
-    file_img = current_dir + rand_img_file[1:].replace('/','\\')
-    print(file_img)
-
-    cb = 'http://localhost:9999/image'
-    data = {
-        "path": file_img,
-        "receiver": "wxid_cf5vewq4pwzj21"
-    }
-    rsp = requests.post(url=cb, json=data, timeout=30)
-    print(rsp)
+# def task():
+#     print("定时任务执行中...")
+#     # 指定图片所在的文件夹路径
+#     img_folder = "./images"
+#     # 获取文件夹中所有的图片文件路径
+#     img_files = [os.path.join(img_folder, f) for f in os.listdir(img_folder) if
+#                  f.endswith(".jpg") or f.endswith(".png")]
+#
+#     # 随机选择一个图片文件路径
+#     rand_img_file = random.choice(img_files)
+#
+#     current_dir = os.getcwd()
+#     print(current_dir)
+#     print(rand_img_file)
+#     file_img = current_dir + rand_img_file[1:].replace('/','\\')
+#     print(file_img)
+#
+#     cb = 'http://localhost:9999/image'
+#     data = {
+#         "path": file_img,
+#         "receiver": "wxid_cf5vewq4pwzj21"
+#     }
+#     rsp = requests.post(url=cb, json=data, timeout=30)
+#     print(rsp)
 
 
 if __name__ == '__main__':
-    task()
-    exit(0)
+    wx_http.chengyu_send()
+    #exit(0)
 
     # 创建定时任务线程
-    schedule_thread = threading.Thread(target=schedule.every().day.at("17:29").do, args=(task,))
-    schedule_thread.start()
+    #schedule_thread = threading.Thread(target=schedule.every().day.at("17:29").do, args=(wx_http.chengyu_send,))
+    #schedule_thread.start()
 
     # 创建定时任务线程
     schedule_thread1 = threading.Thread(target=main, args=())
     schedule_thread1.start()
-
-    # 创建定时任务线程
-    # schedule.every(5).seconds.do(task)
 
 
     while True:
