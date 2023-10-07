@@ -12,6 +12,7 @@ import random
 from func_chengyu import Chengyu
 
 app = FastAPI()
+chengyu = Chengyu()
 
 class Msg(BaseModel):
     id: int
@@ -35,7 +36,7 @@ class wx_http():
 
     async def msg_cb(self, Msg = Body(description="微信消息"), response= Response):
         print(f"收到消息：{Msg}")
-        self.updateContact(Msg)
+        # self.updateContact(Msg)
         self.processMsg(Msg)
 
         return {"status": 500, "message": "成功"}
@@ -43,26 +44,71 @@ class wx_http():
         wxid = Msg['sender']
         roomid = Msg['roomid']
         content = Msg['content']
+        is_at = Msg['is_at']
         print(f"{wxid}[{roomid}]:{content}")
-        if(self.chengyu != '' and self.chengyu == content):
-            chengyu = Chengyu()
-            chengyu_mean = chengyu.getMeaning(self.chengyu)
-            print(chengyu_mean)
-
-            cb = 'http://localhost:9999/text'
-            data = {
-                "msg":"恭喜你，答对了\n" + chengyu_mean,
-                 "receiver":"filehelper"
+        if(roomid != ''):
+            cb = 'http://localhost:9999/alias-in-chatroom/'
+            params = {
+                "roomid": roomid,
+                "wxid": wxid,
             }
-            rsp = requests.post(url=cb, json=data, timeout=30)
-            self.chengyu = ''
-            print(rsp)
+            rsp = requests.get(url=cb, params=params, timeout=30)
+            group_alias_cark = rsp.json()
+            group_nickname = group_alias_cark['data']['alias']
 
+            conn = sqlite3.connect('wx_contact.db')
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT * FROM Contacts WHERE wxid=?", (roomid,))
+            room_rs = cursor.fetchone()
+            print(f"room_rs:{room_rs}")
+            if(room_rs['chengyu_open'] == 1 and room_rs['chengyu'] != '' and content == room_rs['chengyu']):
+                chengyu_mean = chengyu.getMeaning(content)
+                print(chengyu_mean)
+
+                cb = 'http://localhost:9999/text'
+                data = {
+                    "msg": "@" + group_nickname + " \n恭喜你，答对了\n" + chengyu_mean,
+                    "receiver": roomid,
+                    "aters": wxid,
+                }
+                rsp = requests.post(url=cb, json=data, timeout=30)
+                self.chengyu = ''
+                print(rsp)
+
+                cursor.execute("UPDATE Contacts SET chengyu = '' where wxid = '" + roomid + "'")
+                conn.commit()
+            elif(is_at == True):
+                from func_chatgpt import ChatGPT
+                chargpt = {
+                    'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+                    'api': 'https://api.catgpt.im/v1',  # https://api.openai.com/v1
+                    # 'api': 'https://api.catgpt.im/v1',# https://api.openai.com/v1
+                    'proxy': '',  # http://127.0.0.1:21882
+                    'prompt': 'gpt3.5'
+                }
+                chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
+
+                q = content
+                rsp = chat.get_answer(q, wxid)
+                print(rsp)
+
+                cb = 'http://localhost:9999/text'
+                data = {
+                    "msg": "@" + group_nickname + " " + rsp,
+                    "receiver": roomid,
+                    "aters": wxid,
+                }
+                rsp = requests.post(url=cb, json=data, timeout=30)
+                self.chengyu = ''
+                print(rsp)
+            conn.close()
         elif(wxid == 'wxid_mboc06esypzm19'):
             cb = 'http://localhost:9999/text'
             data = {
                 "msg":"你吃饭了没",
-                 "receiver":"wxid_mboc06esypzm19"
+                 "receiver":wxid
             }
             rsp = requests.post(url=cb, json=data, timeout=30)
             print(rsp)
@@ -74,6 +120,7 @@ class wx_http():
         print(f"{wxid}[{roomid}]:{content}")
 
         conn = sqlite3.connect('wx_contact.db')
+        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
         cursor.execute("SELECT * FROM Contacts WHERE wxid=?", (wxid,))
@@ -107,32 +154,74 @@ class wx_http():
         img_files = [os.path.join(img_folder, f) for f in os.listdir(img_folder) if
                      f.endswith(".jpg") or f.endswith(".png")]
 
-        # 随机选择一个图片文件路径
-        rand_img_file = random.choice(img_files)
+        conn = sqlite3.connect('wx_contact.db')
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Contacts WHERE chengyu_open=1")
+        contacts_array = cursor.fetchall()
+        for r in contacts_array:
+            # 随机选择一个图片文件路径
+            rand_img_file = random.choice(img_files)
 
-        current_dir = os.getcwd()
-        print(current_dir)
-        print(rand_img_file)
-        self.chengyu = chengyu = rand_img_file.split('\\')[1].split('.')[0]
-        print(chengyu)
-        file_img = current_dir + rand_img_file[1:].replace('/', '\\')
-        print(file_img)
+            current_dir = os.getcwd()
+            print(current_dir)
+            print(rand_img_file)
+            self.chengyu = chengyu = rand_img_file.split('\\')[1].split('.')[0]
+            print(chengyu)
+            file_img = current_dir + rand_img_file[1:].replace('/', '\\')
+            print(file_img)
 
-        cb = 'http://localhost:9999/image'
-        data = {
-            "path": file_img,
-            "receiver": "filehelper"
-        }
-        rsp = requests.post(url=cb, json=data, timeout=30)
-        print(rsp)
+            cursor.execute("UPDATE Contacts SET chengyu = '" + chengyu + "' where wxid = '" + r['wxid'] + "'")
+            conn.commit()
 
-        cb = 'http://localhost:9999/text'
-        data = {
-            "msg": chengyu,
-             "receiver": "filehelper"
-        }
-        rsp = requests.post(url=cb, json=data, timeout=30)
-        print(rsp)
+            cb = 'http://localhost:9999/image'
+            data = {
+                "path": file_img,
+                "receiver": r['wxid'],#wxid_mboc06esypzm19[34502871363@chatroom]
+                "aters":"",
+            }
+            rsp = requests.post(url=cb, json=data, timeout=30)
+            print(rsp)
+
+            cb = 'http://localhost:9999/text'
+            data = {
+                "msg": chengyu,
+                 "receiver": "filehelper"
+            }
+            rsp = requests.post(url=cb, json=data, timeout=30)
+            print(rsp)
+    def weather_send(self):
+        conn = sqlite3.connect('wx_contact.db')
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Contacts WHERE weather_code<>''")
+        contacts_array = cursor.fetchall()
+        for r in contacts_array:
+            url = 'https://devapi.qweather.com/v7/weather/3d?location='+ r['weather_code'] +'&key=a7a8020835354483ac47da08f3287164'
+            response = requests.get(url)
+            contents = response.json()
+            # print(contents)
+            data = contents['daily']
+            print(data)
+            text = r['weather'] +'今日天气：'
+            text += data[0]['textDay']
+            if (data[0]['textNight'] != data[0]['textDay']):
+                text += '转' + data[0]['textNight']
+            text += '，温度：' + data[0]['tempMin']
+            text += '°C~' + data[0]['tempMax'] + '°C'
+            text += '，' + data[0]['windDirDay'] + data[0]['windScaleDay'] + '级'
+            text += '。日出时间：' + data[0]['sunrise']
+            text += '，日落时间：' + data[0]['sunset'] + '。'
+            text += "\n" + contents['fxLink']
+            print(text)
+
+            cb = 'http://localhost:9999/text'
+            data = {
+                "msg": text,
+                "receiver": r['wxid'],#wxid_mboc06esypzm19[34502871363@chatroom]
+            }
+            rsp = requests.post(url=cb, json=data, timeout=30)
+            print(rsp)
 
 wx_http = wx_http()
 def main():
@@ -168,19 +257,26 @@ def main():
 
 
 if __name__ == '__main__':
-    wx_http.chengyu_send()
+    #wx_http.weather_send()
     #exit(0)
+    #wx_http.chengyu_send()
+
+    #main()
+    # exit(0)
 
     # 创建定时任务线程
-    #schedule_thread = threading.Thread(target=schedule.every().day.at("17:29").do, args=(wx_http.chengyu_send,))
-    #schedule_thread.start()
+    schedule_thread = threading.Thread(target=main, args=())
+    schedule_thread.start()
 
     # 创建定时任务线程
-    schedule_thread1 = threading.Thread(target=main, args=())
+    schedule_thread1 = threading.Thread(target=schedule.every().day.at("17:30").do, args=(wx_http.chengyu_send,))
     schedule_thread1.start()
+
+    # 创建定时任务线程
+    schedule_thread2 = threading.Thread(target=schedule.every().day.at("07:00").do, args=(wx_http.weather_send,))
+    schedule_thread2.start()
 
 
     while True:
         schedule.run_pending()
         time.sleep(1)
-    # main()

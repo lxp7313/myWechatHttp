@@ -3,7 +3,77 @@ from bs4 import BeautifulSoup
 import os
 
 from PIL import Image, ImageFilter, ImageDraw, ImageFont
+import json
+import urllib3
 
+from func_chatgpt import ChatGPT
+
+
+url = 'https://devapi.qweather.com/v7/weather/3d?location=101210103&key=a7a8020835354483ac47da08f3287164'
+response = requests.get(url)
+data = response.json()
+data = data['daily']
+print(data)
+text = '桐庐今日天气：'
+text += data[0]['textDay']
+if(data[0]['textNight'] != data[0]['textDay']):
+    text += data[0]['textNight']
+text += '，温度：' + data[0]['tempMin']
+text += '°C~' + data[0]['tempMax'] + '°C'
+text += '，' + data[0]['windDirDay'] + data[0]['windScaleDay'] + '级'
+text += '。日出时间：' + data[0]['sunrise']
+text += '，日落时间：' + data[0]['sunset'] + '。'
+print(text)
+exit(0)
+
+
+# chatgpt
+chargpt = {
+    'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+    'api': 'https://api.catgpt.im/v1',# https://api.openai.com/v1
+    # 'api': 'https://api.catgpt.im/v1',# https://api.openai.com/v1
+    'proxy': '', #http://127.0.0.1:21882
+    'prompt': 'gpt3.5'
+}
+# chatgpt:
+#   key: 填写你 ChatGPT 的 key
+#   api: https://api.openai.com/v1 # 如果你不知道这是干嘛的，就不要改
+#   proxy: # 如果你在国内，你可能需要魔法，大概长这样：http://域名或者IP地址:端口号
+#   prompt: 你是智能聊天机器人，你叫wcferry # 根据需要对角色进行设定
+chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
+
+q = '你好，你是杭州人吗'
+rsp = chat.get_answer(q, "wxid")
+print(rsp)
+exit(0)
+
+
+
+# 禁用证书验证警告
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+# 测试
+
+headers = {
+    'Authorization': 'Bearer sk-IsFRvsiHvWdS7Go34d98Ef18716f46CcA1F55386DeFe9373',
+}
+
+data = {
+    "model": "gpt3.5",
+    "messages": [{"role": "user", "content": "你是谁"}]
+}
+json_data = json.dumps(data)
+
+response = requests.post('https://api.foforise.xyz/v1/chat/completions', headers=headers, data=json_data, verify=False)
+print(response)
+data = response.json()
+print(data)
+exit(0)
+
+
+
+
+# 文件夹内的图片，放大一倍加锐化
 img_folder = "./images"
 # 获取文件夹中所有的图片文件路径
 img_files = [os.path.join(img_folder, f) for f in os.listdir(img_folder) if
@@ -49,6 +119,8 @@ for i in img_files:
 
 
 exit(0)
+
+# 获取目标网站图片
 # 目标网站URL
 url = "http://www.hydcd.com/cy/fkccy/index4.htm"
 
