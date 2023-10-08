@@ -9,43 +9,49 @@ import urllib3
 from func_chatgpt import ChatGPT
 
 
-url = 'https://devapi.qweather.com/v7/weather/3d?location=101210103&key=a7a8020835354483ac47da08f3287164'
-response = requests.get(url)
-data = response.json()
-data = data['daily']
-print(data)
-text = '桐庐今日天气：'
-text += data[0]['textDay']
-if(data[0]['textNight'] != data[0]['textDay']):
-    text += data[0]['textNight']
-text += '，温度：' + data[0]['tempMin']
-text += '°C~' + data[0]['tempMax'] + '°C'
-text += '，' + data[0]['windDirDay'] + data[0]['windScaleDay'] + '级'
-text += '。日出时间：' + data[0]['sunrise']
-text += '，日落时间：' + data[0]['sunset'] + '。'
-print(text)
-exit(0)
+# url = 'https://devapi.qweather.com/v7/weather/3d?location=101210103&key=a7a8020835354483ac47da08f3287164'
+# response = requests.get(url)
+# data = response.json()
+# data = data['daily']
+# print(data)
+# text = '桐庐今日天气：'
+# text += data[0]['textDay']
+# if(data[0]['textNight'] != data[0]['textDay']):
+#     text += data[0]['textNight']
+# text += '，温度：' + data[0]['tempMin']
+# text += '°C~' + data[0]['tempMax'] + '°C'
+# text += '，' + data[0]['windDirDay'] + data[0]['windScaleDay'] + '级'
+# text += '。日出时间：' + data[0]['sunrise']
+# text += '，日落时间：' + data[0]['sunset'] + '。'
+# print(text)
+# exit(0)
 
-
-# chatgpt
-chargpt = {
-    'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
-    'api': 'https://api.catgpt.im/v1',# https://api.openai.com/v1
-    # 'api': 'https://api.catgpt.im/v1',# https://api.openai.com/v1
-    'proxy': '', #http://127.0.0.1:21882
-    'prompt': 'gpt3.5'
-}
-# chatgpt:
-#   key: 填写你 ChatGPT 的 key
-#   api: https://api.openai.com/v1 # 如果你不知道这是干嘛的，就不要改
-#   proxy: # 如果你在国内，你可能需要魔法，大概长这样：http://域名或者IP地址:端口号
-#   prompt: 你是智能聊天机器人，你叫wcferry # 根据需要对角色进行设定
-chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
-
-q = '你好，你是杭州人吗'
-rsp = chat.get_answer(q, "wxid")
-print(rsp)
-exit(0)
+#
+# # chatgpt
+# chargpt = {
+#     # 'api': 'https://api.openai.com/v1',
+#     # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+#     # 'api': 'https://api.catgpt.im/v1',
+#     'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
+#     'api': 'https://api.foforise.xyz/v1/chat/completions',
+#     'proxy': '', #http://127.0.0.1:21882
+#     'prompt': 'gpt3.5'
+# }
+# # chatgpt:
+# #   key: 填写你 ChatGPT 的 key
+# #   api: https://api.openai.com/v1 # 如果你不知道这是干嘛的，就不要改
+# #   proxy: # 如果你在国内，你可能需要魔法，大概长这样：http://域名或者IP地址:端口号
+# #   prompt: 你是智能聊天机器人，你叫wcferry # 根据需要对角色进行设定
+# chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
+#
+# q = '2*2等于几'
+# rsp = chat.get_answer(q, "wxid")
+# print(rsp)
+#
+# q = '再加3等于几'
+# rsp = chat.get_answer(q, "wxid")
+# print(rsp)
+# exit(0)
 
 
 
@@ -55,11 +61,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # 测试
 
 headers = {
-    'Authorization': 'Bearer sk-IsFRvsiHvWdS7Go34d98Ef18716f46CcA1F55386DeFe9373',
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
 }
 
 data = {
-    "model": "gpt3.5",
+    "model": "gpt-3.5-turbo",
     "messages": [{"role": "user", "content": "你是谁"}]
 }
 json_data = json.dumps(data)
