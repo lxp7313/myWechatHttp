@@ -5,6 +5,7 @@ __version__ = "39.0.3.0"
 
 import atexit
 import base64
+from datetime import datetime
 import logging
 import mimetypes
 import os
@@ -640,10 +641,19 @@ class Wcf():
         Returns:
             Dict: 群成员列表: {wxid1: 昵称1, wxid2: 昵称2, ...}
         """
+        # 格式化为字符串并打印
+        current_time = datetime.now()
+        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+        print(formatted_time)
+
         members = {}
         contacts = self.query_sql("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
         contacts = {contact["UserName"]: contact["NickName"]for contact in contacts}
         crs = self.query_sql("MicroMsg.db", f"SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '{roomid}';")
+        # 格式化为字符串并打印
+        current_time = datetime.now()
+        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+        print(formatted_time)
         if not crs:
             return members
 
@@ -659,6 +669,10 @@ class Wcf():
         for member in crd.members:
             members[member.wxid] = member.name if member.name else contacts.get(member.wxid, "")
 
+        # 格式化为字符串并打印
+        current_time = datetime.now()
+        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+        print(formatted_time)
         return members
 
     def get_alias_in_chatroom(self, wxid: str, roomid: str) -> str:
