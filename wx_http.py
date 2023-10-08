@@ -9,6 +9,7 @@ from datetime import datetime
 import requests
 import os
 import random
+import re
 from func_chengyu import Chengyu
 
 app = FastAPI()
@@ -36,7 +37,19 @@ class wx_http():
 
     async def msg_cb(self, Msg = Body(description="微信消息"), response= Response):
         print(f"收到消息：{Msg}")
-        # self.updateContact(Msg)
+
+        # 格式化为字符串并打印
+        current_time = datetime.now()
+        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+        print('回调时间：' + formatted_time)
+
+        self.updateContact(Msg)
+
+        # 格式化为字符串并打印
+        current_time = datetime.now()
+        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+        print('更新联系人时间：' + formatted_time)
+
         self.processMsg(Msg)
 
         return {"status": 500, "message": "成功"}
@@ -56,6 +69,11 @@ class wx_http():
             group_alias_cark = rsp.json()
             group_nickname = group_alias_cark['data']['alias']
 
+            # 格式化为字符串并打印
+            current_time = datetime.now()
+            formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+            print('获取群昵称时间：' + formatted_time)
+
             conn = sqlite3.connect('wx_contact.db')
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
@@ -63,6 +81,12 @@ class wx_http():
             cursor.execute("SELECT * FROM Contacts WHERE wxid=?", (roomid,))
             room_rs = cursor.fetchone()
             print(f"room_rs:{room_rs}")
+
+            # 格式化为字符串并打印
+            current_time = datetime.now()
+            formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+            print('获取房间信息时间：' + formatted_time)
+
             if(room_rs['chengyu_open'] == 1 and room_rs['chengyu'] != '' and content == room_rs['chengyu']):
                 chengyu_mean = chengyu.getMeaning(content)
                 print(chengyu_mean)
@@ -79,6 +103,19 @@ class wx_http():
 
                 cursor.execute("UPDATE Contacts SET chengyu = '' where wxid = '" + roomid + "'")
                 conn.commit()
+            elif(content[-2:] == '天气'):
+                times = re.findall(r"(今天|明天|后天|今日|明日|后日)", content)
+                times = times[0]
+                day = 0
+                if(times == '今天' or times == '今日'):
+                    day = 0
+                elif(times == '明天' or times == '明日'):
+                    day = 1
+                elif(times == '后天' or times == '后日'):
+                    day = 2
+                from func_weather import Weather
+                wt = Weather()
+                text = wt.get_text("杭州", 1)
             elif(is_at == True):
                 from func_chatgpt import ChatGPT
                 chargpt = {
@@ -94,6 +131,11 @@ class wx_http():
                 rsp = chat.get_answer(q, wxid)
                 print(rsp)
 
+                # 格式化为字符串并打印
+                current_time = datetime.now()
+                formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+                print('获取GPT答案时间：' + formatted_time)
+
                 cb = 'http://localhost:9999/text'
                 data = {
                     "msg": "@" + group_nickname + " " + rsp,
@@ -103,14 +145,37 @@ class wx_http():
                 rsp = requests.post(url=cb, json=data, timeout=30)
                 self.chengyu = ''
                 print(rsp)
+
+                # 格式化为字符串并打印
+                current_time = datetime.now()
+                formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+                print('发送完成时间：' + formatted_time)
             conn.close()
-        elif(wxid == 'wxid_mboc06esypzm19'):
+        elif(wxid == 'wxid_mboc06esypzm19' or wxid == 'wxid_cf5vewq4pwzj21'):
+            from func_chatgpt import ChatGPT
+            chargpt = {
+                # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+                # 'api': 'https://api.catgpt.im/v1',
+                'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+                'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+                'proxy': '', #http://127.0.0.1:21882
+                'prompt': 'gpt3.5'
+            }
+            chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
+
+            q = content
+            rsp = chat.get_answer(q, wxid)
+            print(rsp)
+
             cb = 'http://localhost:9999/text'
             data = {
-                "msg":"你吃饭了没",
-                 "receiver":wxid
+                "msg": rsp,
+                "receiver": wxid,
+                "aters": '',
             }
             rsp = requests.post(url=cb, json=data, timeout=30)
+            self.chengyu = ''
+            print(rsp)
             print(rsp)
 
     def updateContact(self, Msg):
@@ -229,32 +294,10 @@ def main():
 
     uvicorn.run(app, host="localhost", port=10000)
 
-# 定义任务函数
-# def task():
-#     print("定时任务执行中...")
-#     # 指定图片所在的文件夹路径
-#     img_folder = "./images"
-#     # 获取文件夹中所有的图片文件路径
-#     img_files = [os.path.join(img_folder, f) for f in os.listdir(img_folder) if
-#                  f.endswith(".jpg") or f.endswith(".png")]
-#
-#     # 随机选择一个图片文件路径
-#     rand_img_file = random.choice(img_files)
-#
-#     current_dir = os.getcwd()
-#     print(current_dir)
-#     print(rand_img_file)
-#     file_img = current_dir + rand_img_file[1:].replace('/','\\')
-#     print(file_img)
-#
-#     cb = 'http://localhost:9999/image'
-#     data = {
-#         "path": file_img,
-#         "receiver": "wxid_cf5vewq4pwzj21"
-#     }
-#     rsp = requests.post(url=cb, json=data, timeout=30)
-#     print(rsp)
-
+def run_schedule():
+    while not stop_flag:
+        schedule.run_pending()
+        time.sleep(1)
 
 if __name__ == '__main__':
     #wx_http.weather_send()
@@ -264,19 +307,28 @@ if __name__ == '__main__':
     #main()
     # exit(0)
 
+    main_thread = threading.Thread(target=main, args=())
+
     # 创建定时任务线程
-    schedule_thread = threading.Thread(target=main, args=())
+    schedule_thread = threading.Thread(target=schedule.every().day.at("07:00").do, args=(wx_http.weather_send,))
+    schedule_thread.daemon = True
+
+    # 设置停止标志
+    stop_flag = False
+
+    main_thread.start()
     schedule_thread.start()
 
-    # 创建定时任务线程
-    schedule_thread1 = threading.Thread(target=schedule.every().day.at("17:30").do, args=(wx_http.chengyu_send,))
-    schedule_thread1.start()
+    # 开启另一个线程执行定时任务
+    schedule_run_thread = threading.Thread(target=run_schedule)
+    schedule_run_thread.start()
+
+    main_thread.join()
+
+    # 停止定时任务线程
+    stop_flag = True
+    schedule_run_thread.join()
 
     # 创建定时任务线程
-    schedule_thread2 = threading.Thread(target=schedule.every().day.at("07:00").do, args=(wx_http.weather_send,))
-    schedule_thread2.start()
-
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    # schedule_thread2 = threading.Thread(target=schedule.every().day.at("07:00").do, args=(wx_http.chengyu_send,))
+    # schedule_thread2.start()

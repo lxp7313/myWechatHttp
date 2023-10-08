@@ -84,7 +84,7 @@ class Http(FastAPI):
         data["is_group"] = msg.from_group()
 
         try:
-            rsp = requests.post(url=cb, json=data, timeout=30)
+            rsp = requests.post(url=cb, json=data, timeout=60)
             if rsp.status_code != 200:
                 self.LOG.error(f"消息转发失败，HTTP 状态码为: {rsp.status_code}")
         except Exception as e:

@@ -7,31 +7,60 @@ import json
 import urllib3
 
 from func_chatgpt import ChatGPT
+from datetime import datetime
 
 
-url = 'https://devapi.qweather.com/v7/weather/3d?location=101210103&key=a7a8020835354483ac47da08f3287164'
-response = requests.get(url)
-data = response.json()
-data = data['daily']
-print(data)
-text = '桐庐今日天气：'
-text += data[0]['textDay']
-if(data[0]['textNight'] != data[0]['textDay']):
-    text += data[0]['textNight']
-text += '，温度：' + data[0]['tempMin']
-text += '°C~' + data[0]['tempMax'] + '°C'
-text += '，' + data[0]['windDirDay'] + data[0]['windScaleDay'] + '级'
-text += '。日出时间：' + data[0]['sunrise']
-text += '，日落时间：' + data[0]['sunset'] + '。'
-print(text)
+# 格式化为字符串并打印
+current_time = datetime.now()
+formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+print(formatted_time)
+
+cb = 'http://localhost:9999/chatroom-member/'
+params = {
+    "roomid": '34664095645@chatroom',
+    "wxid": 'wxid_cf5vewq4pwzj21',
+}
+rsp = requests.get(url=cb, params=params, timeout=30)
+group_alias_cark = rsp.text
+# group_nickname = group_alias_cark['data']['alias']
+print(group_alias_cark)
+
+# 格式化为字符串并打印
+current_time = datetime.now()
+formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+print(formatted_time)
+
 exit(0)
+#
+# url = 'https://devapi.qweather.com/v7/weather/3d?location=101210103&key=a7a8020835354483ac47da08f3287164'
+# response = requests.get(url)
+# data = response.json()
+# data = data['daily']
+# print(data)
+# text = '桐庐今日天气：'
+# text += data[0]['textDay']
+# if(data[0]['textNight'] != data[0]['textDay']):
+#     text += data[0]['textNight']
+# text += '，温度：' + data[0]['tempMin']
+# text += '°C~' + data[0]['tempMax'] + '°C'
+# text += '，' + data[0]['windDirDay'] + data[0]['windScaleDay'] + '级'
+# text += '。日出时间：' + data[0]['sunrise']
+# text += '，日落时间：' + data[0]['sunset'] + '。'
+# print(text)
+# exit(0)
+# 获取当前时间
 
+# 格式化为字符串并打印
+current_time = datetime.now()
+formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+print(formatted_time)
 
 # chatgpt
 chargpt = {
-    'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
-    'api': 'https://api.catgpt.im/v1',# https://api.openai.com/v1
-    # 'api': 'https://api.catgpt.im/v1',# https://api.openai.com/v1
+    # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+    # 'api': 'https://api.catgpt.im/v1',
+    'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+    'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
     'proxy': '', #http://127.0.0.1:21882
     'prompt': 'gpt3.5'
 }
@@ -45,6 +74,14 @@ chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt
 q = '你好，你是杭州人吗'
 rsp = chat.get_answer(q, "wxid")
 print(rsp)
+
+# 获取当前时间
+current_time = datetime.now()
+
+# 格式化为字符串并打印
+formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+print(formatted_time)
+
 exit(0)
 
 
