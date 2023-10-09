@@ -12,26 +12,26 @@ from datetime import datetime
 
 
 # 格式化为字符串并打印
-current_time = datetime.now()
-formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
-print(formatted_time)
-
-cb = 'http://localhost:9999/chatroom-member/'
-params = {
-    "roomid": '34664095645@chatroom',
-    "wxid": 'wxid_cf5vewq4pwzj21',
-}
-rsp = requests.get(url=cb, params=params, timeout=30)
-group_alias_cark = rsp.text
-# group_nickname = group_alias_cark['data']['alias']
-print(group_alias_cark)
-
-# 格式化为字符串并打印
-current_time = datetime.now()
-formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
-print(formatted_time)
-
-exit(0)
+# current_time = datetime.now()
+# formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+# print(formatted_time)
+#
+# cb = 'http://localhost:9999/chatroom-member/'
+# params = {
+#     "roomid": '34664095645@chatroom',
+#     "wxid": 'wxid_cf5vewq4pwzj21',
+# }
+# rsp = requests.get(url=cb, params=params, timeout=30)
+# group_alias_cark = rsp.text
+# # group_nickname = group_alias_cark['data']['alias']
+# print(group_alias_cark)
+#
+# # 格式化为字符串并打印
+# current_time = datetime.now()
+# formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+# print(formatted_time)
+#
+# exit(0)
 #
 
 # url = 'https://devapi.qweather.com/v7/weather/3d?location=101210103&key=a7a8020835354483ac47da08f3287164'
@@ -60,10 +60,12 @@ print(formatted_time)
 
 # chatgpt
 chargpt = {
-    # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
-    # 'api': 'https://api.catgpt.im/v1',
-    'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
-    'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+    'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+    'api': 'https://api.catgpt.im/v1',
+    # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+    # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+    # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
+    # 'api': 'https://api.foforise.xyz/v1',
     'proxy': '', #http://127.0.0.1:21882
     'prompt': 'gpt3.5'
 }

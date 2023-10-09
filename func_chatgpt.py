@@ -23,7 +23,7 @@ class ChatGPT():
 
         try:
             ret = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
+                model="gpt-3.5-turbo-16k",
                 messages=self.conversation_list[wxid],
                 temperature=0.2
             )

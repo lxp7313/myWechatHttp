@@ -11,9 +11,10 @@ import os
 import random
 import re
 from func_chengyu import Chengyu
+from func_weather import Weather
 
 app = FastAPI()
-chengyu = Chengyu()
+cy = Chengyu()
 
 class Msg(BaseModel):
     id: int
@@ -88,7 +89,7 @@ class wx_http():
             print('获取房间信息时间：' + formatted_time)
 
             if(room_rs['chengyu_open'] == 1 and room_rs['chengyu'] != '' and content == room_rs['chengyu']):
-                chengyu_mean = chengyu.getMeaning(content)
+                chengyu_mean = cy.getMeaning(content)
                 print(chengyu_mean)
 
                 cb = 'http://localhost:9999/text'
@@ -105,23 +106,74 @@ class wx_http():
                 conn.commit()
             elif(content[-2:] == '天气'):
                 times = re.findall(r"(今天|明天|后天|今日|明日|后日)", content)
-                times = times[0]
                 day = 0
-                if(times == '今天' or times == '今日'):
-                    day = 0
-                elif(times == '明天' or times == '明日'):
-                    day = 1
-                elif(times == '后天' or times == '后日'):
-                    day = 2
-                from func_weather import Weather
+                print(times)
+                if len(times) > 0:
+                    times = times[0]
+                    if (times == '今天' or times == '今日'):
+                        day = 0
+                    elif (times == '明天' or times == '明日'):
+                        day = 1
+                    elif (times == '后天' or times == '后日'):
+                        day = 2
+                content = re.sub(r"[^\u4e00-\u9fa5]", "", content)
+                content = re.sub(r"今天|明天|后天|今日|明日|后日|天气", "", content)
+
                 wt = Weather()
-                text = wt.get_text("杭州", 1)
+                text = wt.get_text(content, day)
+
+                cb = 'http://localhost:9999/text'
+                data = {
+                    "msg": text,
+                    "receiver": roomid,  # wxid_mboc06esypzm19[34502871363@chatroom]
+                }
+                rsp = requests.post(url=cb, json=data, timeout=30)
+                print(rsp)
+            elif(content == '猜谜' or content == '猜谜语' or content == '猜成语' or content == '看图猜成语'):
+                img_folder = "./images"
+                # 获取文件夹中所有的图片文件路径
+                img_files = [os.path.join(img_folder, f) for f in os.listdir(img_folder) if
+                             f.endswith(".jpg") or f.endswith(".png")]
+
+                # 随机选择一个图片文件路径
+                rand_img_file = random.choice(img_files)
+
+                current_dir = os.getcwd()
+                print(current_dir)
+                print(rand_img_file)
+                self.chengyu = chengyu = rand_img_file.split('\\')[1].split('.')[0]
+                print(chengyu)
+                file_img = current_dir + rand_img_file[1:].replace('/', '\\')
+                print(file_img)
+
+                cursor.execute("UPDATE Contacts SET chengyu = '" + chengyu + "' where wxid = '" + roomid + "'")
+                conn.commit()
+
+                cb = 'http://localhost:9999/image'
+                data = {
+                    "path": file_img,
+                    "receiver": roomid,  # wxid_mboc06esypzm19[34502871363@chatroom]
+                    "aters": "",
+                }
+                rsp = requests.post(url=cb, json=data, timeout=30)
+                print(rsp)
+
+                cb = 'http://localhost:9999/text'
+                data = {
+                    "msg": chengyu,
+                    "receiver": "filehelper"
+                }
+                rsp = requests.post(url=cb, json=data, timeout=30)
+                print(rsp)
             elif(is_at == True):
                 from func_chatgpt import ChatGPT
                 chargpt = {
                     'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
-                    'api': 'https://api.catgpt.im/v1',  # https://api.openai.com/v1
-                    # 'api': 'https://api.catgpt.im/v1',# https://api.openai.com/v1
+                    'api': 'https://api.catgpt.im/v1',
+                    # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+                    # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+                    # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
+                    # 'api': 'https://api.foforise.xyz/v1',
                     'proxy': '',  # http://127.0.0.1:21882
                     'prompt': 'gpt3.5'
                 }
@@ -154,10 +206,12 @@ class wx_http():
         elif(wxid == 'wxid_mboc06esypzm19' or wxid == 'wxid_cf5vewq4pwzj21'):
             from func_chatgpt import ChatGPT
             chargpt = {
-                # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
-                # 'api': 'https://api.catgpt.im/v1',
-                'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
-                'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+                'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+                'api': 'https://api.catgpt.im/v1',
+                # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+                # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+                # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
+                # 'api': 'https://api.foforise.xyz/v1',
                 'proxy': '', #http://127.0.0.1:21882
                 'prompt': 'gpt3.5'
             }
@@ -330,5 +384,5 @@ if __name__ == '__main__':
     schedule_run_thread.join()
 
     # 创建定时任务线程
-    # schedule_thread2 = threading.Thread(target=schedule.every().day.at("07:00").do, args=(wx_http.chengyu_send,))
+    # schedule_thread2 = threading.Thread(target=schedule.every().day.at("17:30").do, args=(wx_http.chengyu_send,))
     # schedule_thread2.start()

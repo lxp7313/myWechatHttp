@@ -58,7 +58,7 @@ class Weather(object):
         text += '，日落时间：' + data['sunset'] + '。'
         text += "\n" + contents['fxLink']
         print(text)
-        return location
+        return text
 
 
 wt = Weather()
@@ -77,5 +77,5 @@ if __name__ == "__main__":
     content = re.sub(r"[^\u4e00-\u9fa5]", "", content)
     content = re.sub(r"今天|明天|后天|今日|明日|后日|天气", "", content)
 
-    text = wt.get_text("杭州", day)
+    text = wt.get_text(content, day)
     print(text)
