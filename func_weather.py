@@ -75,7 +75,7 @@ if __name__ == "__main__":
     elif (times == '后天' or times == '后日'):
         day = 2
     content = re.sub(r"[^\u4e00-\u9fa5]", "", content)
-    content = re.sub(r"今天|明天|后天|今日|明日|后日|天气", "", content)
+    content = re.sub(r"今天|明天|后天|今日|明日|后日|天气", "", content).strip()
 
     text = wt.get_text(content, day)
     print(text)
