@@ -4,6 +4,8 @@
 from datetime import datetime
 
 import openai
+import os
+import numpy as np
 
 
 class ChatGPT():
@@ -50,16 +52,24 @@ class ChatGPT():
 
         time_mk = "当需要回答时间时请直接参考回复:"
         # 初始化聊天记录,组装系统信息
+        if os.path.exists('./logs/' + wxid + '.npy'):
+            print(1111)
+            self.conversation_list[wxid] = np.load('./logs/' + wxid + '.npy', allow_pickle=True)
         if wxid not in self.conversation_list.keys():
             question_ = [
                 self.system_content_msg,
                 {"role": "system", "content": "" + time_mk + now_time}
             ]
             self.conversation_list[wxid] = question_
+            np.save('./logs/' + wxid + '.npy', question_)
 
         # 当前问题
+        print(self.conversation_list[wxid])
         content_question_ = {"role": role, "content": question}
-        self.conversation_list[wxid].append(content_question_)
+        print(content_question_)
+        self.conversation_list[wxid] = np.append(self.conversation_list[wxid], content_question_.reshape(1, -1), axis=0)
+        np.save('./logs/' + wxid + '.npy', self.conversation_list[wxid])
+        print(f"nnn{self.conversation_list[wxid]}")
 
         for cont in self.conversation_list[wxid]:
             if cont["role"] != "system":

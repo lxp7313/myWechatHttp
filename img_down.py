@@ -76,7 +76,7 @@ chargpt = {
 #   prompt: 你是智能聊天机器人，你叫wcferry # 根据需要对角色进行设定
 chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
 
-q = '你好，你是杭州人吗'
+q = '你好，你是谁'
 rsp = chat.get_answer(q, "wxid")
 print(rsp)
 
