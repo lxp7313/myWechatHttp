@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import requests
 from bs4 import BeautifulSoup
 import os
@@ -10,7 +12,54 @@ from func_chatgpt import ChatGPT
 from datetime import datetime
 
 
+import asyncio, json
+from EdgeGPT.EdgeGPT import Chatbot, ConversationStyle
 
+async def main():
+    cookies = json.loads(open("./cookies.json", encoding="utf-8").read())  # 可能会忽略 cookie 选项
+    bot = await Chatbot.create(proxy="http://localhost:10809")#cookies=cookies,
+    response = await bot.ask(prompt="Hello world", conversation_style=ConversationStyle.creative, simplify_response=True)
+    print(json.dumps(response, indent=2)) # 返回下面这些
+    """
+{
+    "text": str,
+    "author": str,
+    "sources": list[dict],
+    "sources_text": str,
+    "suggestions": list[str],
+    "messages_left": int
+}
+    """
+    await bot.close()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+exit()
+
+
+async def main():
+    cookies = json.loads(open("./cookies.json", encoding="utf-8").read())  # 可能会忽略 cookie 选项
+    bot = await Chatbot.create(cookies=cookies) # 导入 cookie 是“可选”的，如前所述
+    response = await bot.ask(prompt="Hello world", conversation_style=ConversationStyle.creative, simplify_response=True)
+    print(json.dumps(response, indent=2)) # 返回下面这些
+    """
+{
+    "text": str,
+    "author": str,
+    "sources": list[dict],
+    "sources_text": str,
+    "suggestions": list[str],
+    "messages_left": int
+}
+    """
+    await bot.close()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+
+exit()
 # 格式化为字符串并打印
 # current_time = datetime.now()
 # formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
