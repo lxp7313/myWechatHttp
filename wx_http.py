@@ -70,6 +70,9 @@ class wx_http():
             group_alias_cark = rsp.json()
             group_nickname = group_alias_cark['data']['alias']
 
+            content = content.replace("@" + group_nickname + ' ', '')
+            content = content.replace("@" + group_nickname, '')
+
             # 格式化为字符串并打印
             current_time = datetime.now()
             formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -168,10 +171,10 @@ class wx_http():
             elif(is_at == True):
                 from func_chatgpt import ChatGPT
                 chargpt = {
-                    'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
-                    'api': 'https://api.catgpt.im/v1',
-                    # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
-                    # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+                    # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+                    # 'api': 'https://api.catgpt.im/v1',
+                    'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+                    'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
                     # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
                     # 'api': 'https://api.foforise.xyz/v1',
                     'proxy': '',  # http://127.0.0.1:21882
@@ -206,10 +209,10 @@ class wx_http():
         elif(wxid == 'wxid_mboc06esypzm19' or wxid == 'wxid_cf5vewq4pwzj21'):
             from func_chatgpt import ChatGPT
             chargpt = {
-                'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
-                'api': 'https://api.catgpt.im/v1',
-                # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
-                # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+                # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+                # 'api': 'https://api.catgpt.im/v1',
+                'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+                'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
                 # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
                 # 'api': 'https://api.foforise.xyz/v1',
                 'proxy': '', #http://127.0.0.1:21882

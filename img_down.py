@@ -60,10 +60,10 @@ print(formatted_time)
 
 # chatgpt
 chargpt = {
-    'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
-    'api': 'https://api.catgpt.im/v1',
-    # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
-    # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+    # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+    # 'api': 'https://api.catgpt.im/v1',
+    'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+    'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
     # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
     # 'api': 'https://api.foforise.xyz/v1',
     'proxy': '', #http://127.0.0.1:21882

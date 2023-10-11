@@ -5,7 +5,7 @@ from datetime import datetime
 
 import openai
 import os
-import numpy as np
+import pickle
 
 
 class ChatGPT():
@@ -25,7 +25,7 @@ class ChatGPT():
 
         try:
             ret = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo-16k",
+                model="gpt-3.5-turbo",#-16k
                 messages=self.conversation_list[wxid],
                 temperature=0.2
             )
@@ -52,24 +52,24 @@ class ChatGPT():
 
         time_mk = "当需要回答时间时请直接参考回复:"
         # 初始化聊天记录,组装系统信息
-        if os.path.exists('./logs/' + wxid + '.npy'):
+        if os.path.exists('./logs/' + wxid + '.pkl'):
             print(1111)
-            self.conversation_list[wxid] = np.load('./logs/' + wxid + '.npy', allow_pickle=True)
+            with open('./logs/' + wxid + '.pkl', 'rb') as f:
+                self.conversation_list[wxid] = pickle.load(f)
         if wxid not in self.conversation_list.keys():
             question_ = [
                 self.system_content_msg,
                 {"role": "system", "content": "" + time_mk + now_time}
             ]
             self.conversation_list[wxid] = question_
-            np.save('./logs/' + wxid + '.npy', question_)
+            with open('./logs/' + wxid + '.pkl', 'wb') as f:
+                pickle.dump(question_, f)
 
         # 当前问题
-        print(self.conversation_list[wxid])
+        print(f"dist:{self.conversation_list[wxid]}")
         content_question_ = {"role": role, "content": question}
         print(content_question_)
-        self.conversation_list[wxid] = np.append(self.conversation_list[wxid], content_question_.reshape(1, -1), axis=0)
-        np.save('./logs/' + wxid + '.npy', self.conversation_list[wxid])
-        print(f"nnn{self.conversation_list[wxid]}")
+        self.conversation_list[wxid].append(content_question_)
 
         for cont in self.conversation_list[wxid]:
             if cont["role"] != "system":
@@ -83,6 +83,9 @@ class ChatGPT():
             print("滚动清除微信记录：" + wxid)
             # 删除多余的记录，倒着删，且跳过第一个的系统消息
             del self.conversation_list[wxid][1]
+        with open('./logs/' + wxid + '.pkl', 'wb') as f:
+            pickle.dump(self.conversation_list[wxid], f)
+        print(f"nnn{self.conversation_list[wxid]}")
 
 
 if __name__ == "__main__":
