@@ -12,54 +12,8 @@ from func_chatgpt import ChatGPT
 from datetime import datetime
 
 
-import asyncio, json
-from EdgeGPT.EdgeGPT import Chatbot, ConversationStyle
-
-async def main():
-    cookies = json.loads(open("./cookies.json", encoding="utf-8").read())  # 可能会忽略 cookie 选项
-    bot = await Chatbot.create(proxy="http://localhost:10809")#cookies=cookies,
-    response = await bot.ask(prompt="Hello world", conversation_style=ConversationStyle.creative, simplify_response=True)
-    print(json.dumps(response, indent=2)) # 返回下面这些
-    """
-{
-    "text": str,
-    "author": str,
-    "sources": list[dict],
-    "sources_text": str,
-    "suggestions": list[str],
-    "messages_left": int
-}
-    """
-    await bot.close()
-
-if __name__ == "__main__":
-    asyncio.run(main())
-
-exit()
 
 
-async def main():
-    cookies = json.loads(open("./cookies.json", encoding="utf-8").read())  # 可能会忽略 cookie 选项
-    bot = await Chatbot.create(cookies=cookies) # 导入 cookie 是“可选”的，如前所述
-    response = await bot.ask(prompt="Hello world", conversation_style=ConversationStyle.creative, simplify_response=True)
-    print(json.dumps(response, indent=2)) # 返回下面这些
-    """
-{
-    "text": str,
-    "author": str,
-    "sources": list[dict],
-    "sources_text": str,
-    "suggestions": list[str],
-    "messages_left": int
-}
-    """
-    await bot.close()
-
-if __name__ == "__main__":
-    asyncio.run(main())
-
-
-exit()
 # 格式化为字符串并打印
 # current_time = datetime.now()
 # formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -109,10 +63,12 @@ print(formatted_time)
 
 # chatgpt
 chargpt = {
+    'key': 'Link_kRFp6JccNVvHXuWSNFM9uhtxNKeKcdsxK4yKtlL0gn',
+    'api': 'https://api.link-ai.chat/v1/chat/completions',
     # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
     # 'api': 'https://api.catgpt.im/v1',
-    'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
-    'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+    # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+    # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
     # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
     # 'api': 'https://api.foforise.xyz/v1',
     'proxy': '', #http://127.0.0.1:21882

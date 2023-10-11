@@ -11,4 +11,3 @@ schedule
 pillow==9.5.0
 pandas
 openai
-EdgeGPT
