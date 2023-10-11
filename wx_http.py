@@ -171,14 +171,16 @@ class wx_http():
             elif(is_at == True):
                 from func_chatgpt import ChatGPT
                 chargpt = {
+                    'key': 'Link_kRFp6JccNVvHXuWSNFM9uhtxNKeKcdsxK4yKtlL0gn-tNb5Vm57',
+                    'api': 'https://api.link-ai.chat/v1',
                     # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
                     # 'api': 'https://api.catgpt.im/v1',
-                    'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
-                    'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+                    # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+                    # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
                     # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
                     # 'api': 'https://api.foforise.xyz/v1',
                     'proxy': '',  # http://127.0.0.1:21882
-                    'prompt': 'gpt3.5'
+                    'prompt': 'gpt-3.5-turbo-16k'
                 }
                 chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
 
@@ -209,14 +211,16 @@ class wx_http():
         elif(wxid == 'wxid_mboc06esypzm19' or wxid == 'wxid_cf5vewq4pwzj21'):
             from func_chatgpt import ChatGPT
             chargpt = {
+                'key': 'Link_kRFp6JccNVvHXuWSNFM9uhtxNKeKcdsxK4yKtlL0gn-tNb5Vm57',
+                'api': 'https://api.link-ai.chat/v1',
                 # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
                 # 'api': 'https://api.catgpt.im/v1',
-                'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
-                'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+                # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+                # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
                 # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
                 # 'api': 'https://api.foforise.xyz/v1',
-                'proxy': '', #http://127.0.0.1:21882
-                'prompt': 'gpt3.5'
+                'proxy': '',  # http://127.0.0.1:21882
+                'prompt': 'gpt-3.5-turbo-16k'
             }
             chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
 
