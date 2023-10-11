@@ -63,8 +63,8 @@ print(formatted_time)
 
 # chatgpt
 chargpt = {
-    'key': 'Link_kRFp6JccNVvHXuWSNFM9uhtxNKeKcdsxK4yKtlL0gn',
-    'api': 'https://api.link-ai.chat/v1/chat/completions',
+    'key': 'Link_kRFp6JccNVvHXuWSNFM9uhtxNKeKcdsxK4yKtlL0gn-tNb5Vm57',
+    'api': 'https://api.link-ai.chat/v1',
     # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
     # 'api': 'https://api.catgpt.im/v1',
     # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
@@ -72,7 +72,7 @@ chargpt = {
     # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
     # 'api': 'https://api.foforise.xyz/v1',
     'proxy': '', #http://127.0.0.1:21882
-    'prompt': 'gpt3.5'
+    'prompt': 'gpt-3.5-turbo-16k'
 }
 # chatgpt:
 #   key: 填写你 ChatGPT 的 key
@@ -81,7 +81,7 @@ chargpt = {
 #   prompt: 你是智能聊天机器人，你叫wcferry # 根据需要对角色进行设定
 chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
 
-q = '你好，你是谁'
+q = '阿糖好看吗'
 rsp = chat.get_answer(q, "wxid")
 print(rsp)
 
