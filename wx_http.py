@@ -51,7 +51,8 @@ class wx_http():
         formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
         print('更新联系人时间：' + formatted_time)
 
-        self.processMsg(Msg)
+        if(Msg['type'] == 1):
+            self.processMsg(Msg)
 
         return {"status": 500, "message": "成功"}
     def processMsg(self, Msg):
