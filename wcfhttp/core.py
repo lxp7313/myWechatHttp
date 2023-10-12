@@ -57,7 +57,7 @@ class Http(FastAPI):
         self.add_api_route("/text", self.send_text, methods=["POST"], summary="发送文本消息")
         self.add_api_route("/image", self.send_image, methods=["POST"], summary="发送图片消息")
         self.add_api_route("/file", self.send_file, methods=["POST"], summary="发送文件消息")
-        # self.add_api_route("/xml", self.send_xml, methods=["POST"], summary="发送 XML 消息")
+        self.add_api_route("/xml", self.send_xml, methods=["POST"], summary="发送 XML 消息")
         # self.add_api_route("/emotion", self.send_emotion, methods=["POST"], summary="发送表情消息")
         self.add_api_route("/sql", self.query_sql, methods=["POST"], summary="执行 SQL，如果数据量大注意分页，以免 OOM")
         self.add_api_route("/new-friend", self.accept_new_friend, methods=["POST"], summary="通过好友申请")

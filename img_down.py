@@ -15,27 +15,28 @@ from datetime import datetime
 
 
 # 格式化为字符串并打印
-# current_time = datetime.now()
-# formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
-# print(formatted_time)
-#
-# cb = 'http://localhost:9999/chatroom-member/'
-# params = {
-#     "roomid": '34664095645@chatroom',
-#     "wxid": 'wxid_cf5vewq4pwzj21',
-# }
-# rsp = requests.get(url=cb, params=params, timeout=30)
+current_time = datetime.now()
+formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+print(formatted_time)
+
+cb = 'http://localhost:9999/pyq/'
+params = {
+    "id": '0',
+}
+# 收到消息：{'id': 9031054296394415394, 'ts': 1697096244, 'sign': '7959c1f6800978e0823c7a73d538d4ed', 'type': 47, 'xml': '<msgsource>\n\t<silence>1</silence>\n\t<membercount>13</membercount>\n\t<signature>v1_3k03ZCRy</signature>\n\t<tmp_node>\n\t\t<publisher-id></publisher-id>\n\t</tmp_node>\n</msgsource>\n', 'sender': 'YiQ108', 'roomid': '7700923334@chatroom', 'content': '<msg><emoji fromusername = "YiQ108" tousername = "7700923334@chatroom" type="2" idbuffer="media:0_0" md5="4b250df240eb4da0a0402b8b5cd64a89" len = "211729" productid="" androidmd5="4b250df240eb4da0a0402b8b5cd64a89" androidlen="211729" s60v3md5 = "4b250df240eb4da0a0402b8b5cd64a89" s60v3len="211729" s60v5md5 = "4b250df240eb4da0a0402b8b5cd64a89" s60v5len="211729" cdnurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=4b250df240eb4da0a0402b8b5cd64a89&amp;filekey=30350201010421301f020201060402534804104b250df240eb4da0a0402b8b5cd64a890203033b11040d00000004627466730000000132&amp;hy=SH&amp;storeid=2630e14bc00030d3b000000000000010600004f50534808367b40b7c6573de&amp;bizid=1023" designerid = "" thumburl = "" encrypturl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=9a0098104f3550ac578eac481015f6bb&amp;filekey=30350201010421301f020201060402534804109a0098104f3550ac578eac481015f6bb0203033b20040d00000004627466730000000132&amp;hy=SH&amp;storeid=2630e14bc00073bd5000000000000010600004f5053480d167b40b7ca4efdc&amp;bizid=1023" aeskey= "4ba755354537be951b34b9471f277875" externurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=c2f04a00a91b681402099c010bf07131&amp;filekey=30340201010420301e02020106040253480410c2f04a00a91b681402099c010bf0713102026700040d00000004627466730000000132&amp;hy=SH&amp;storeid=2630e14bc000a15ec000000000000010600004f50534819c65b40b7c6d2acc&amp;bizid=1023" externmd5 = "9fccb2614ba4e088f0707e6339077588" width= "300" height= "300" tpurl= "" tpauthkey= "" attachedtext= "" attachedtextcolor= "" lensid= "" emojiattr= "" linkid= "" desc= "" ></emoji> <gameext type="0" content="0" ></gameext></msg>', 'thumb': '', 'extra': '', 'is_at': False, 'is_self': False, 'is_group': True}
+
+rsp = requests.get(url=cb, params=params, timeout=30)
 # group_alias_cark = rsp.text
-# # group_nickname = group_alias_cark['data']['alias']
-# print(group_alias_cark)
-#
-# # 格式化为字符串并打印
-# current_time = datetime.now()
-# formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
-# print(formatted_time)
-#
-# exit(0)
-#
+# group_nickname = group_alias_cark['data']['alias']
+print(rsp)
+
+# 格式化为字符串并打印
+current_time = datetime.now()
+formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+print(formatted_time)
+
+exit(0)
+
 
 # url = 'https://devapi.qweather.com/v7/weather/3d?location=101210103&key=a7a8020835354483ac47da08f3287164'
 # response = requests.get(url)
@@ -57,42 +58,37 @@ from datetime import datetime
 # 获取当前时间
 
 # 格式化为字符串并打印
-current_time = datetime.now()
-formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
-print(formatted_time)
-
-# chatgpt
-chargpt = {
-    'key': 'Link_kRFp6JccNVvHXuWSNFM9uhtxNKeKcdsxK4yKtlL0gn-tNb5Vm57',
-    'api': 'https://api.link-ai.chat/v1',
-    # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
-    # 'api': 'https://api.catgpt.im/v1',
-    # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
-    # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
-    # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
-    # 'api': 'https://api.foforise.xyz/v1',
-    'proxy': '', #http://127.0.0.1:21882
-    'prompt': 'gpt-3.5-turbo-16k'
-}
-# chatgpt:
-#   key: 填写你 ChatGPT 的 key
-#   api: https://api.openai.com/v1 # 如果你不知道这是干嘛的，就不要改
-#   proxy: # 如果你在国内，你可能需要魔法，大概长这样：http://域名或者IP地址:端口号
-#   prompt: 你是智能聊天机器人，你叫wcferry # 根据需要对角色进行设定
-chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
-
-q = '阿糖好看吗'
-rsp = chat.get_answer(q, "wxid")
-print(rsp)
-
-# 获取当前时间
-current_time = datetime.now()
+# current_time = datetime.now()
+# formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+# print(formatted_time)
+#
+# # chatgpt
+# chargpt = {
+#     'key': 'Link_kRFp6JccNVvHXuWSNFM9uhtxNKeKcdsxK4yKtlL0gn-tNb5Vm57',
+#     'api': 'https://api.link-ai.chat/v1',
+#     # 'key': 'sk-BZh0SXyYQ6XSi6KG81533eBd148449B794395fC6349559A1',
+#     # 'api': 'https://api.catgpt.im/v1',
+#     # 'key': 'sk-ywvVhPvlXWNXhaSW9a5c310bD94f44F7BdE028Cb58470dF5',
+#     # 'api': 'https://api.chat8.tech/v1',# https://api.openai.com/v1
+#     # 'key': 'sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
+#     # 'api': 'https://api.foforise.xyz/v1',
+#     'proxy': '', #http://127.0.0.1:21882
+#     'prompt': 'gpt-3.5-turbo-16k'
+# }
+# chat = ChatGPT(chargpt["key"], chargpt["api"], chargpt["proxy"], chargpt["prompt"])
+#
+# q = '阿糖好看吗'
+# rsp = chat.get_answer(q, "wxid")
+# print(rsp)
+#
+# # 获取当前时间
+# current_time = datetime.now()
 
 # 格式化为字符串并打印
-formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
-print(formatted_time)
-
-exit(0)
+# formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+# print(formatted_time)
+#
+# exit(0)
 
 
 #
@@ -126,26 +122,26 @@ exit(0)
 
 
 # 禁用证书验证警告
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-# 测试
-
-headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
-}
-
-data = {
-    "model": "gpt-3.5-turbo",
-    "messages": [{"role": "user", "content": "你是谁"}]
-}
-json_data = json.dumps(data)
-
-response = requests.post('https://api.foforise.xyz/v1/chat/completions', headers=headers, data=json_data, verify=False)
-print(response)
-data = response.json()
-print(data)
-exit(0)
+# urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+#
+# # 测试
+#
+# headers = {
+#     'Content-Type': 'application/json',
+#     'Authorization': 'Bearer sk-376bkdfy8FiC3Pyg108bF1A62b8e4b9aA85fE30eAd7635Eb',
+# }
+#
+# data = {
+#     "model": "gpt-3.5-turbo",
+#     "messages": [{"role": "user", "content": "你是谁"}]
+# }
+# json_data = json.dumps(data)
+#
+# response = requests.post('https://api.foforise.xyz/v1/chat/completions', headers=headers, data=json_data, verify=False)
+# print(response)
+# data = response.json()
+# print(data)
+# exit(0)
 
 
 

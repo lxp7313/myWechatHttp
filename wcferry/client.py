@@ -363,6 +363,7 @@ class Wcf():
         if path:
             req.xml.path = path
         rsp = self._send_request(req)
+        print(f"client:{rsp}")
         return rsp.status
 
     def send_emotion(self, path: str, receiver: str) -> int:
