@@ -15,27 +15,27 @@ from datetime import datetime
 
 
 # 格式化为字符串并打印
-current_time = datetime.now()
-formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
-print(formatted_time)
-
-cb = 'http://localhost:9999/pyq/'
-params = {
-    "id": '0',
-}
-# 收到消息：{'id': 9031054296394415394, 'ts': 1697096244, 'sign': '7959c1f6800978e0823c7a73d538d4ed', 'type': 47, 'xml': '<msgsource>\n\t<silence>1</silence>\n\t<membercount>13</membercount>\n\t<signature>v1_3k03ZCRy</signature>\n\t<tmp_node>\n\t\t<publisher-id></publisher-id>\n\t</tmp_node>\n</msgsource>\n', 'sender': 'YiQ108', 'roomid': '7700923334@chatroom', 'content': '<msg><emoji fromusername = "YiQ108" tousername = "7700923334@chatroom" type="2" idbuffer="media:0_0" md5="4b250df240eb4da0a0402b8b5cd64a89" len = "211729" productid="" androidmd5="4b250df240eb4da0a0402b8b5cd64a89" androidlen="211729" s60v3md5 = "4b250df240eb4da0a0402b8b5cd64a89" s60v3len="211729" s60v5md5 = "4b250df240eb4da0a0402b8b5cd64a89" s60v5len="211729" cdnurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=4b250df240eb4da0a0402b8b5cd64a89&amp;filekey=30350201010421301f020201060402534804104b250df240eb4da0a0402b8b5cd64a890203033b11040d00000004627466730000000132&amp;hy=SH&amp;storeid=2630e14bc00030d3b000000000000010600004f50534808367b40b7c6573de&amp;bizid=1023" designerid = "" thumburl = "" encrypturl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=9a0098104f3550ac578eac481015f6bb&amp;filekey=30350201010421301f020201060402534804109a0098104f3550ac578eac481015f6bb0203033b20040d00000004627466730000000132&amp;hy=SH&amp;storeid=2630e14bc00073bd5000000000000010600004f5053480d167b40b7ca4efdc&amp;bizid=1023" aeskey= "4ba755354537be951b34b9471f277875" externurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=c2f04a00a91b681402099c010bf07131&amp;filekey=30340201010420301e02020106040253480410c2f04a00a91b681402099c010bf0713102026700040d00000004627466730000000132&amp;hy=SH&amp;storeid=2630e14bc000a15ec000000000000010600004f50534819c65b40b7c6d2acc&amp;bizid=1023" externmd5 = "9fccb2614ba4e088f0707e6339077588" width= "300" height= "300" tpurl= "" tpauthkey= "" attachedtext= "" attachedtextcolor= "" lensid= "" emojiattr= "" linkid= "" desc= "" ></emoji> <gameext type="0" content="0" ></gameext></msg>', 'thumb': '', 'extra': '', 'is_at': False, 'is_self': False, 'is_group': True}
-
-rsp = requests.get(url=cb, params=params, timeout=30)
-# group_alias_cark = rsp.text
-# group_nickname = group_alias_cark['data']['alias']
-print(rsp)
-
-# 格式化为字符串并打印
-current_time = datetime.now()
-formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
-print(formatted_time)
-
-exit(0)
+# current_time = datetime.now()
+# formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+# print(formatted_time)
+#
+# cb = 'http://localhost:9999/pyq/'
+# params = {
+#     "id": '0',
+# }
+# # 收到消息：{'id': 9031054296394415394, 'ts': 1697096244, 'sign': '7959c1f6800978e0823c7a73d538d4ed', 'type': 47, 'xml': '<msgsource>\n\t<silence>1</silence>\n\t<membercount>13</membercount>\n\t<signature>v1_3k03ZCRy</signature>\n\t<tmp_node>\n\t\t<publisher-id></publisher-id>\n\t</tmp_node>\n</msgsource>\n', 'sender': 'YiQ108', 'roomid': '7700923334@chatroom', 'content': '<msg><emoji fromusername = "YiQ108" tousername = "7700923334@chatroom" type="2" idbuffer="media:0_0" md5="4b250df240eb4da0a0402b8b5cd64a89" len = "211729" productid="" androidmd5="4b250df240eb4da0a0402b8b5cd64a89" androidlen="211729" s60v3md5 = "4b250df240eb4da0a0402b8b5cd64a89" s60v3len="211729" s60v5md5 = "4b250df240eb4da0a0402b8b5cd64a89" s60v5len="211729" cdnurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=4b250df240eb4da0a0402b8b5cd64a89&amp;filekey=30350201010421301f020201060402534804104b250df240eb4da0a0402b8b5cd64a890203033b11040d00000004627466730000000132&amp;hy=SH&amp;storeid=2630e14bc00030d3b000000000000010600004f50534808367b40b7c6573de&amp;bizid=1023" designerid = "" thumburl = "" encrypturl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=9a0098104f3550ac578eac481015f6bb&amp;filekey=30350201010421301f020201060402534804109a0098104f3550ac578eac481015f6bb0203033b20040d00000004627466730000000132&amp;hy=SH&amp;storeid=2630e14bc00073bd5000000000000010600004f5053480d167b40b7ca4efdc&amp;bizid=1023" aeskey= "4ba755354537be951b34b9471f277875" externurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=c2f04a00a91b681402099c010bf07131&amp;filekey=30340201010420301e02020106040253480410c2f04a00a91b681402099c010bf0713102026700040d00000004627466730000000132&amp;hy=SH&amp;storeid=2630e14bc000a15ec000000000000010600004f50534819c65b40b7c6d2acc&amp;bizid=1023" externmd5 = "9fccb2614ba4e088f0707e6339077588" width= "300" height= "300" tpurl= "" tpauthkey= "" attachedtext= "" attachedtextcolor= "" lensid= "" emojiattr= "" linkid= "" desc= "" ></emoji> <gameext type="0" content="0" ></gameext></msg>', 'thumb': '', 'extra': '', 'is_at': False, 'is_self': False, 'is_group': True}
+#
+# rsp = requests.get(url=cb, params=params, timeout=30)
+# # group_alias_cark = rsp.text
+# # group_nickname = group_alias_cark['data']['alias']
+# print(rsp)
+#
+# # 格式化为字符串并打印
+# current_time = datetime.now()
+# formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+# print(formatted_time)
+#
+# exit(0)
 
 
 # url = 'https://devapi.qweather.com/v7/weather/3d?location=101210103&key=a7a8020835354483ac47da08f3287164'
@@ -144,6 +144,49 @@ exit(0)
 # exit(0)
 
 
+
+#爬率土武将
+n = 100001
+while(n < 140584):
+    print(n)
+    url = "https://stzb.163.com/herolist/" + str(n) + ".html"
+    response = requests.get(url)
+    html_content = response.content
+    # 使用BeautifulSoup解析网页内容
+    soup = BeautifulSoup(html_content, "html.parser")
+    try:
+        title = soup.select(".role-content h1")[0].get_text().strip().split('-')
+        title1 = soup.select(".role-content .attr-list")[0].get_text().strip() + "\n"
+        title1 += soup.select(".role-content .attr-list")[1].get_text().strip() + "\n"
+        title1 += soup.select(".role-content .attr-list")[2].get_text().strip()
+        title2 = soup.select(".role-content .desc .star-")[0]
+        con = soup.select(".role-content .group")[0].get_text().strip().replace(" ", "").replace("\n", "")
+        con1 = soup.select(".role-content .group")[1].get_text().strip().replace(" ", "").replace("\n", "")
+        # 找到所有的图片标签
+        #img_tags = soup.find_all("img")
+        # print(soup)
+        print(f"武将名称：{title[0]}")
+        print(title2)
+        star = 5
+        print(f"所属阵容：{title[1]}")
+        print(title1)
+        print(con)
+        print(con1)
+
+        data = "武将名称：" + title[0] + "\n"
+        data += "所属阵容：" + title[1] + "\n"
+        data += "所属阵容：" + title1 + "\n"
+        data += con + "\n"
+        data += con1
+        data = data.replace("\n", " ")
+        with open("file.txt", "a") as file:
+            file.write(data + "\n\n")
+    except:
+        print(1)
+    else:
+        print(2)
+    n += 1
+exit()
 
 
 # 文件夹内的图片，放大一倍加锐化
